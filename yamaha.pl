@@ -5,19 +5,6 @@ use Switch;
 use LWP::UserAgent;
 use HTTP::Request::Common;
 
-if ($#ARGV != 1) {
-    print "\nUsage: yamaha.pl <address> <command>\n";
-    exit;
-}
-
-my $address = $ARGV[0];
-my $command = $ARGV[1];
-
-my $userAgent = LWP::UserAgent->new(agent => 'perl post');
-
-#my $message = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-#<YAMAHA_AV cmd=\"GET\"><System><Config>GetParam</Config></System></YAMAHA_AV>";
-
 my $xmlheader = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 my $putheader = "<YAMAHA_AV cmd=\"PUT\">";
 my $getheader = "<YAMAHA_AV cmd=\"GET\">";
@@ -42,6 +29,22 @@ my %putmessages = (
     scene4 => "<Main_Zone><Scene><Scene_Load>Scene 4</Scene_Load></Scene></Main_Zone>",
     innetradio => "<Main_Zone><Input><Input_Sel>NET RADIO</Input_Sel></Input></Main_Zone>",
 );
+
+if ($#ARGV != 1) {
+    print "\nUsage: yamaha.pl <address> <command>\n\n";
+    print "Put commands: ";
+    print "$_ " foreach (keys%putmessages);
+    print "\n";
+    exit;
+}
+
+my $address = $ARGV[0];
+my $command = $ARGV[1];
+
+my $userAgent = LWP::UserAgent->new(agent => 'perl post');
+
+#my $message = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>
+#<YAMAHA_AV cmd=\"GET\"><System><Config>GetParam</Config></System></YAMAHA_AV>";
 
 sub put_message {
     my ($command) = @_;
